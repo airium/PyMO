@@ -13,7 +13,18 @@ class MocapData():
         self.channel_names = []
         self.framerate = 0.0
         self.root_name = ''
-    
+
+    def __getitem__(self, key):
+        assert isinstance(key, slice)
+        import copy
+        new_data = MocapData()
+        new_data.skeleton = copy.deepcopy(self.skeleton)
+        new_data.values = copy.deepcopy(self.values)[key]
+        new_data.channel_names = copy.deepcopy(self.channel_names)
+        new_data.root_name = copy.deepcopy(self.root_name)
+        new_data.framerate = copy.deepcopy(self.framerate)
+        return new_data
+
     def traverse(self, j=None):
         stack = [self.root_name]
         while stack:
@@ -41,9 +52,9 @@ class MocapData():
     def get_skeleton_tree(self):
         tree = []
         root_key =  [j for j in self.skeleton if self.skeleton[j]['parent']==None][0]
-        
+
         root_joint = Joint(root_key)
-    
+
     def get_empty_channels(self):
         #TODO
         pass
