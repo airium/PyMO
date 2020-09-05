@@ -1,10 +1,12 @@
 import numpy as np
 
+
 class Joint():
     def __init__(self, name, parent=None, children=None):
         self.name = name
         self.parent = parent
         self.children = children
+
 
 class MocapData():
     def __init__(self):
@@ -24,6 +26,9 @@ class MocapData():
         new_data.root_name = copy.deepcopy(self.root_name)
         new_data.framerate = copy.deepcopy(self.framerate)
         return new_data
+
+    def __len__(self):
+        return len(self.values)
 
     def traverse(self, j=None):
         stack = [self.root_name]
@@ -51,7 +56,7 @@ class MocapData():
 
     def get_skeleton_tree(self):
         tree = []
-        root_key =  [j for j in self.skeleton if self.skeleton[j]['parent']==None][0]
+        root_key = [j for j in self.skeleton if self.skeleton[j]['parent'] == None][0]
 
         root_joint = Joint(root_key)
 
